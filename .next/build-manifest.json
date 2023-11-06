@@ -15,6 +15,11 @@
   ],
   "rootMainFiles": [],
   "pages": {
+    "/Productos/[productId]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Productos/[productId].js"
+    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -24,21 +29,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
-    ],
-    "/filter/DuendeJote": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/filter/DuendeJote.js"
-    ],
-    "/filter/DuendeSimp": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/filter/DuendeSimp.js"
-    ],
-    "/filter/Erai": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/filter/Erai.js"
     ]
   },
   "ampFirstPages": []

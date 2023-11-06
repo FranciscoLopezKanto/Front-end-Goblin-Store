@@ -12,7 +12,7 @@ interface ProductProps {
     id: number;
     name: string;
     description: string;
-    description_large: string; // Agregamos la descripción larga
+    description_large: string;
     price: number;
     image: string;
   };
@@ -62,7 +62,7 @@ function Product({ product }: ProductProps) {
   };
 
   const [size, setSize] = useState<string | null>(null);
-  const [number, setNumber] = useState<number | null>(null);
+  const [number, setNumber] = useState<string | null>(null); // Corrección: Cambiar el tipo a string
   const [namePerso, setNamePerso] = useState<string | null>(null);
   const [qtde, setQtde] = useState(1);
 
@@ -73,7 +73,8 @@ function Product({ product }: ProductProps) {
   }
 
   function handleChangeNumber(e: React.ChangeEvent<HTMLInputElement>) {
-    setNumber(parseInt(e.target.value));
+    const numericValue = parseInt(e.target.value);
+    setNumber(numericValue.toString());
   }
 
   function handleChangeName(e: React.ChangeEvent<HTMLInputElement>) {
@@ -86,7 +87,7 @@ function Product({ product }: ProductProps) {
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-
+    const precio= product.price;
     if (size === null) {
       toast.warn("Elige el tamaño de la ropa po!", {
         position: "top-center",
@@ -152,7 +153,6 @@ function Product({ product }: ProductProps) {
           <h2>{product.name}</h2>
           <h2 className={styles.value}>CLP${parseFloat(product.price).toLocaleString("es-CL")}</h2>
 
-          {/* Agregamos la descripción y la descripción larga aquí */}
           <p>{product.description}</p>
           <p>{product.description_large}</p>
 

@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/filter/DuendeSimp": "pages/filter/DuendeSimp.js",
-  "/filter/Erai": "pages/filter/Erai.js",
-  "/filter/DuendeJote": "pages/filter/DuendeJote.js"
+  "/Productos/[productId]": "pages/Productos/[productId].js"
 }
