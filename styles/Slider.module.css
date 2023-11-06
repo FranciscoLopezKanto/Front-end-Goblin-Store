@@ -1,0 +1,22 @@
+.container{
+    width: 90vw;
+    height: fit-content;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.sliderItem{
+    text-align: center;
+    background-color: transparent;
+    color: black;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.img{
+    height: 100vh;
+}
+
+
