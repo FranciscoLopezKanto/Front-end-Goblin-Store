@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-
 import {
   Container,
   Paper,
@@ -7,20 +6,42 @@ import {
   Button,
   Typography,
 } from '@mui/material';
+import { useQuery, gql } from '@apollo/client';
+import client from '../../apollo/apolloClient'; // Importa el cliente Apollo
+import { useRouter } from 'next/router'; // Importa el enrutador de Next.js
+
+const LOGIN_QUERY = gql`
+  query Login($email: String!, $password: String!) {
+    Login(email: $email, password: $password) {
+      firstName
+      lastName
+      jwt
+    }
+  }
+`;
 
 const LoginPage: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [message, setMessage] = useState('');
+  const router = useRouter(); // Obtiene el enrutador de Next.js
 
-  const handleLogin = () => {
-    // Aquí puedes agregar la lógica de inicio de sesión, por ejemplo, una llamada a una API.
-    console.log('Iniciando sesión con email:', email, 'y contraseña:', password);
-  };
+  const handleLogin = async () => {
+    try {
+      const { data } = await client.query({
+        query: LOGIN_QUERY,
+        variables: { email, password },
+      });
 
-  const handleRegister = () => {
-    // Aquí puedes agregar la lógica de registro, por ejemplo, una llamada a una API.
-    console.log('Registrando nuevo usuario con email:', email, 'y contraseña:', password);
+      setMessage('Inicio de sesión exitoso');
+
+      // Redirige a la página de inicio ("/") después de 1 segundo
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    } catch (error) {
+      setMessage('Error al iniciar sesión. Verifica tus credenciales.');
+    }
   };
 
   return (
@@ -31,13 +52,10 @@ const LoginPage: FC = () => {
           padding: '16px',
           marginTop: '60px',
           height: '400px',
-          //backgroundImage: 'url(https://i.postimg.cc/nj8Dh0dK/Duende.gif)', 
           backgroundSize: 'cover',
         }}
       >
-        <Typography variant="h5">
-          {isRegistering ? 'Registro' : 'Inicio de Sesión'}
-        </Typography>
+        <Typography variant="h5">Inicio de Sesión</Typography>
         <form>
           <TextField
             fullWidth
@@ -60,17 +78,13 @@ const LoginPage: FC = () => {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={isRegistering ? handleRegister : handleLogin}
+            onClick={handleLogin}
             style={{ margin: '10px 0' }}
           >
-            {isRegistering ? 'Registrarse' : 'Iniciar Sesión'}
+            Iniciar Sesión
           </Button>
-          <Typography
-            variant="body2"
-            style={{ margin: '10px 0', cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={() => setIsRegistering(!isRegistering)}
-          >
-            {isRegistering ? '¿Ya tienes una cuenta? Iniciar Sesión' : '¿No tienes una cuenta? Registrarse'}
+          <Typography variant="body2" style={{ margin: '10px 0', color: 'red' }}>
+            {message}
           </Typography>
         </form>
       </Paper>
