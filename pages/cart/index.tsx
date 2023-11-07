@@ -31,8 +31,7 @@ function Cart() {
   }, []);
 
   const handleCheckout = () => {
-    // Implementa la lógica de finalización de compra aquí
-    // Esto podría incluir redireccionar a una página de confirmación de pedido, mostrar un mensaje, etc.
+    //lógica para finalizar 
   };
 
   return (
