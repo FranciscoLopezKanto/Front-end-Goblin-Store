@@ -1,6 +1,6 @@
 E-commerce de ropa 
 
 - Front-end .
-- Rutas dinâmicas oferecidas con Next
+- Rutas dinnamicas con Next
 - Sistema de carrito
 

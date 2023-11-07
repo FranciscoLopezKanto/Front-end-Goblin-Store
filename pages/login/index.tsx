@@ -6,10 +6,9 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import { useQuery, gql } from '@apollo/client';
-import client from '../../apollo/apolloClient'; // Importa el cliente Apollo
-import { useRouter } from 'next/router'; // Importa el enrutador de Next.js
-
+import { useQuery, gql ,useMutation} from '@apollo/client';
+import { useRouter } from 'next/router';
+import client from '../../apollo/apolloClient';
 const LOGIN_QUERY = gql`
   query Login($email: String!, $password: String!) {
     Login(email: $email, password: $password) {
@@ -20,11 +19,38 @@ const LOGIN_QUERY = gql`
   }
 `;
 
+const REGISTER_MUTATION = gql`
+  mutation Register(
+    $email: String!
+    $password: String!
+    $firstName: String!
+    $lastName: String!
+    $phone: String!
+    $address: String!
+  ) {
+    SignUp(
+      email: $email,
+      password: $password,
+      first_name: $firstName,
+      last_name: $lastName,
+      phone: $phone,
+      address: $address
+    ) 
+      
+  }
+`;
+
 const LoginPage: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [message, setMessage] = useState('');
-  const router = useRouter(); // Obtiene el enrutador de Next.js
+  const [isRegistering, setIsRegistering] = useState(false);
+  const router = useRouter();
+ 
 
   const handleLogin = async () => {
     try {
@@ -35,7 +61,6 @@ const LoginPage: FC = () => {
 
       setMessage('Inicio de sesión exitoso');
 
-      // Redirige a la página de inicio ("/") después de 1 segundo
       setTimeout(() => {
         router.push('/');
       }, 1000);
@@ -43,6 +68,31 @@ const LoginPage: FC = () => {
       setMessage('Error al iniciar sesión. Verifica tus credenciales.');
     }
   };
+
+  const handleRegister = async () => {
+    try {
+      const { data } = await client.mutate({
+        mutation:REGISTER_MUTATION,
+        variables: {
+          email,
+          password,
+          firstName,
+          lastName,
+          phone,
+          address,
+        },
+      });
+
+      setMessage('Registro exitoso');
+
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    } catch (error) {
+      setMessage('Error al registrar. Verifica tus datos.');
+    }
+  };
+
 
   return (
     <Container maxWidth="xs">
@@ -55,7 +105,9 @@ const LoginPage: FC = () => {
           backgroundSize: 'cover',
         }}
       >
-        <Typography variant="h5">Inicio de Sesión</Typography>
+        <Typography variant="h5">
+          {isRegistering ? 'Registro' : 'Inicio de Sesión'}
+        </Typography>
         <form>
           <TextField
             fullWidth
@@ -74,20 +126,63 @@ const LoginPage: FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             style={{ margin: '10px 0' }}
           />
+          {isRegistering && (
+            <>
+              <TextField
+                fullWidth
+                label="Nombre"
+                variant="outlined"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                style={{ margin: '10px 0' }}
+              />
+              <TextField
+                fullWidth
+                label="Apellido"
+                variant="outlined"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                style={{ margin: '10px 0' }}
+              />
+              <TextField
+                fullWidth
+                label="Teléfono"
+                variant="outlined"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                style={{ margin: '10px 0' }}
+              />
+              <TextField
+                fullWidth
+                label="Dirección"
+                variant="outlined"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                style={{ margin: '10px 0' }}
+              />
+            </>
+          )}
           <Button
             fullWidth
             variant="contained"
             color="primary"
-            onClick={handleLogin}
+            onClick={isRegistering ? handleRegister : handleLogin}
             style={{ margin: '10px 0' }}
           >
-            Iniciar Sesión
+            {isRegistering ? 'Registrarse' : 'Iniciar Sesión'}
           </Button>
           <Typography variant="body2" style={{ margin: '10px 0', color: 'red' }}>
             {message}
           </Typography>
         </form>
       </Paper>
+      <Typography
+        variant="body2"
+        style={{ margin: '10px 0', cursor: 'pointer', textDecoration: 'underline' }}
+        onClick={() => setIsRegistering(!isRegistering)}
+      >
+        {isRegistering ? '¿Ya tienes una cuenta? Iniciar Sesión' : '¿No tienes una cuenta? Registrarse'}
+      </Typography>
     </Container>
   );
 };
