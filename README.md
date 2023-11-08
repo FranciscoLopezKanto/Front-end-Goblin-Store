@@ -19,3 +19,10 @@ Para configurar y ejecutar el proyecto, sigue estos pasos:
 
    ```bash
    npm install
+
+3.Ejectuta el comando para iniciar el proyecto: npm run dev
+
+   ```bash
+   npm run dev
+
+4.nota adicional (recuerda cambiar los puertos para la implementacion correcta del grapql) 
