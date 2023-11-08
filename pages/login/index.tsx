@@ -113,7 +113,7 @@ const LoginPage: FC = () => {
         style={{
           padding: '16px',
           marginTop: '60px',
-          minHeight: '400px',
+          minHeight: '300px',
           backgroundSize: 'cover',
         }}
       >
