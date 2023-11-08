@@ -6,9 +6,10 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import { useQuery, gql ,useMutation} from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import { useRouter } from 'next/router';
 import client from '../../apollo/apolloClient';
+
 const LOGIN_QUERY = gql`
   query Login($email: String!, $password: String!) {
     Login(email: $email, password: $password) {
@@ -35,8 +36,7 @@ const REGISTER_MUTATION = gql`
       last_name: $lastName,
       phone: $phone,
       address: $address
-    ) 
-      
+    )
   }
 `;
 
@@ -50,7 +50,12 @@ const LoginPage: FC = () => {
   const [message, setMessage] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const router = useRouter();
- 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    jwt: '',
+  });
 
   const handleLogin = async () => {
     try {
@@ -59,11 +64,18 @@ const LoginPage: FC = () => {
         variables: { email, password },
       });
 
+      const { jwt, firstName, lastName } = data.Login;
+      setIsLoggedIn(true);
+      setUserData({ firstName, lastName, jwt });
+      localStorage.setItem('user_info', JSON.stringify({ firstName, lastName, jwt }));
+      // Realizar acciones con los datos, como redirigir al usuario
       setMessage('Inicio de sesión exitoso');
 
       setTimeout(() => {
-        router.push('/');
-      }, 1000);
+        window.location.href = "/";
+       
+      }, 1000); //1 segundos
+      
     } catch (error) {
       setMessage('Error al iniciar sesión. Verifica tus credenciales.');
     }
@@ -72,7 +84,7 @@ const LoginPage: FC = () => {
   const handleRegister = async () => {
     try {
       const { data } = await client.mutate({
-        mutation:REGISTER_MUTATION,
+        mutation: REGISTER_MUTATION,
         variables: {
           email,
           password,
@@ -83,6 +95,7 @@ const LoginPage: FC = () => {
         },
       });
 
+      // Realizar acciones con los datos, como redirigir al usuario
       setMessage('Registro exitoso');
 
       setTimeout(() => {
@@ -93,7 +106,6 @@ const LoginPage: FC = () => {
     }
   };
 
-
   return (
     <Container maxWidth="xs">
       <Paper
@@ -101,7 +113,7 @@ const LoginPage: FC = () => {
         style={{
           padding: '16px',
           marginTop: '60px',
-          height: '400px',
+          minHeight: '400px',
           backgroundSize: 'cover',
         }}
       >
@@ -181,7 +193,7 @@ const LoginPage: FC = () => {
         style={{ margin: '10px 0', cursor: 'pointer', textDecoration: 'underline' }}
         onClick={() => setIsRegistering(!isRegistering)}
       >
-        {isRegistering ? '¿Ya tienes una cuenta? Iniciar Sesión' : '¿No tienes una cuenta? Registrarse'}
+        {isRegistering ? '¿Ya tienes una cuenta? Iniciar Sesión' : '¿No tienes una cuenta? Regístrate'}
       </Typography>
     </Container>
   );

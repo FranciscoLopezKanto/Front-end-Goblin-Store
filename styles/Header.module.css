@@ -10,8 +10,11 @@
 }
 .loginIcon {
   display: flex;
-  align-items: center; /* Esto centrará verticalmente el ícono */
-  margin-right:  0px; /* Ajusta el margen según tus preferencias */
+  align-items: center;
+  justify-content: space-between;
+  margin-right: -10px;
+  bottom: 80%;
+  margin-right: -50px;
 }
 
 .logo{
@@ -60,6 +63,9 @@
   align-items: center;
   flex-direction: row;
   overflow: hidden;
+  margin-right: -10px;
+  margin-right: -150px;
+  bottom: 80%;
   
 }
 
