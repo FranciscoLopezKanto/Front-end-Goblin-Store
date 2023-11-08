@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useContext } from "react";
-import FilterContext from "../../contexts/FilterContext";
+import React, { useContext } from "react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../../styles/Filtro.module.css";
+import database from "../../components/database"; // 
+import FilterContext from "../../contexts/FilterContext";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await fetch("https://express-ecommerce-server.vercel.app/getAll");
-  const data = await res.json();
-
+  
 
   return {
     props: {
-      data: data,
+      data: database, 
     },
   };
 };
@@ -22,38 +20,37 @@ function Filter({ data }: any) {
   const dataContext = useContext(FilterContext);
 
   const dataFiltered = data.filter((i: any) =>
-    i.team_name.includes(dataContext.state.data)
+    i.name.includes(dataContext.state.data)
   );
 
-  if (dataFiltered.length == 0) {
+  if (dataFiltered.length === 0) {
     return (
       <div>
         {data.map(
           (i: {
-            team_name: string;
-            value: number;
-            team_year: string;
-            _id: string;
-            sport: string;
+            image: any; 
+            name: string;
+            price: string;
+            id: number;
+            description: string;
+            description_large: string;
           }) => (
-            <Link href={`/${i.sport}/${i._id}`} key={i._id}>
+            <Link href={`/${i.id}`} key={i.id}>
               <div className={styles.product}>
                 <Image
-                  src={`/images/${i.team_name.split(" ").join("")}/${i.team_name
-                    .split(" ")
-                    .join("")}_det1.webp`}
-                  height="300px"
-                  width={"300px"}
+                  src={i.image} 
+                  height={500}
+                  width={400}
                   style={{ borderRadius: "10px" }}
-                ></Image>
+                />
                 <div className={styles.wrapperInfosTeam}>
                   <h2 className={styles.TeamName}>
-                    {i.team_name} | {i.team_year}
+                    {i.name}
                   </h2>
                 </div>
                 <div className={styles.wrapperPrice}>
-                  <div className={styles.discountPrice}>R$350,00</div>
-                  <div className={styles.rightPrice}> R${i.value - 1},99</div>
+                  <div className={styles.discountPrice}>CLP$12990,00</div>
+                  <div className={styles.rightPrice}> CLP${i.price},00</div>
                 </div>
               </div>
             </Link>
@@ -67,39 +64,39 @@ function Filter({ data }: any) {
     <div className={styles.containerProducts}>
       {dataFiltered.map(
         (i: {
-          team_name: string;
-          value: number;
-          team_year: string;
-          _id: string;
-          sport: string;
+          image: any; 
+          name: string;
+          price: string;
+          id: number;
+          description: string;
+          description_large: string;
         }) => (
-          <Link href={`/${i.sport}/${i._id}`} key={i._id}>
+          <Link href={`/${i.id}`} key={i.id}>
             <div className={styles.product}>
               <Image
-                src={`/Poleras/${i.team_name.split(" ").join("")}/${i.team_name
-                  .split(" ")
-                  .join("")}_det1.webp`}
-                height="300px"
-                width={"300px"}
+                src={i.image} // Usa i.image directamente
+                height={400}
+                width={300}
                 style={{ borderRadius: "10px" }}
-              ></Image>
+              />
               <div className={styles.wrapperInfosTeam}>
                 <h2 className={styles.TeamName}>
-                  {i.team_name} | {i.team_year}
+                  {i.name}
                 </h2>
               </div>
               <div className={styles.wrapperPrice}>
-                <div className={styles.discountPrice}>R$350,00</div>
-                <div className={styles.rightPrice}> R${i.value - 1},99</div>
+                <div className={styles.discountPrice}>CLP$12,990</div>
+                <div className={styles.rightPrice}> CLP${i.price}</div>
               </div>
             </div>
           </Link>
         )
       )}
+     
       <div className={styles.dontFind}>
-          <h2>Não encontrou o que precisava?😢</h2>
-          <p>Nos mande sua duvida/sugestão pela DM do instagram, <Link href="https://www.instagram.com/diamond.storebh/" rel='next' target="_blank">clicando aqui!</Link></p>
-        </div>
+        <h2>No encontraste lo que necesitabas?😢</h2>
+        <p>Mandanos un DM al Instagram, <Link href="https://www.instagram.com/llanura_de.kanto" rel='next' target="_blank">clicando aquí</Link></p>
+      </div>
     </div>
   );
 }

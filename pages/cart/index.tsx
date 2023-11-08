@@ -31,7 +31,8 @@ function Cart() {
   }, []);
 
   const handleCheckout = () => {
-    //lógica para finalizar 
+
+    
   };
 
   return (

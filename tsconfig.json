@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Slider.js", "pages/Productos/[productId].js", "pages/filter/[filterId].js", "contexts/FilterContext.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Slider.js", "pages/Productos/[productId].tsx", "pages/filter/[filterId].js", "contexts/FilterContext.js"],
   "exclude": ["node_modules"]
 }
