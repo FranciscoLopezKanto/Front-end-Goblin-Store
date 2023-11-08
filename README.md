@@ -1,10 +1,18 @@
-E-commerce de ropa 
+# E-commerce de Ropa
 
-- Front-end .
-- Rutas dinamicas oferecidas con Next
-- Sistema de carrito
+## Front-end
 
+Este proyecto es un E-commerce de ropa desarrollado en React utilizando Next.js. Proporciona una experiencia de compra en línea para productos de ropa.
 
--npm install para instalar los modulos.
--npm run dev para correr el proyecto.
--(nota recordar modificar la direccion de la api gateway , en la carpeta apollo , archivo apollo.ts)
+## Características
+
+- Rutas dinámicas ofrecidas con Next.js.
+- Implementación de un sistema de carrito de compras.
+
+## Instrucciones
+
+Para configurar y ejecutar el proyecto, sigue estos pasos:
+
+1. Clona este repositorio.
+
+2. Ejecuta el siguiente comando para instalar los módulos necesarios:
