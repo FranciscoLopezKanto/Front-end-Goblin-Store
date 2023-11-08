@@ -3,15 +3,15 @@ import { GetStaticProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../../styles/Filtro.module.css";
-import database from "../../components/database"; // Importa el array desde el nuevo archivo
+import database from "../../components/database"; // 
 import FilterContext from "../../contexts/FilterContext";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  // No necesitas una petición externa ya que los datos están en el array database
+  
 
   return {
     props: {
-      data: database, // Usa el array directamente
+      data: database, 
     },
   };
 };
@@ -28,7 +28,7 @@ function Filter({ data }: any) {
       <div>
         {data.map(
           (i: {
-            image: any; // Asegúrate de que image sea del tipo correcto
+            image: any; 
             name: string;
             price: string;
             id: number;
@@ -38,7 +38,7 @@ function Filter({ data }: any) {
             <Link href={`/${i.id}`} key={i.id}>
               <div className={styles.product}>
                 <Image
-                  src={i.image} // Usa i.image directamente
+                  src={i.image} 
                   height={500}
                   width={400}
                   style={{ borderRadius: "10px" }}
@@ -49,8 +49,8 @@ function Filter({ data }: any) {
                   </h2>
                 </div>
                 <div className={styles.wrapperPrice}>
-                  <div className={styles.discountPrice}>R$350,00</div>
-                  <div className={styles.rightPrice}> R${i.price},99</div>
+                  <div className={styles.discountPrice}>CLP$12990,00</div>
+                  <div className={styles.rightPrice}> CLP${i.price},00</div>
                 </div>
               </div>
             </Link>
@@ -64,7 +64,7 @@ function Filter({ data }: any) {
     <div className={styles.containerProducts}>
       {dataFiltered.map(
         (i: {
-          image: any; // Asegúrate de que image sea del tipo correcto
+          image: any; 
           name: string;
           price: string;
           id: number;
