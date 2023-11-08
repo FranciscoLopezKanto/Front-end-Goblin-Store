@@ -16,3 +16,6 @@ Para configurar y ejecutar el proyecto, sigue estos pasos:
 1. Clona este repositorio.
 
 2. Ejecuta el siguiente comando para instalar los módulos necesarios:
+
+   ```bash
+   npm install
