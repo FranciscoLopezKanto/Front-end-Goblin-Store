@@ -3,6 +3,7 @@
 ## Front-end
 
 Este proyecto es un E-commerce de ropa desarrollado en React utilizando Next.js. Proporciona una experiencia de compra en línea para productos de ropa.
+Nota adicional (recuerda cambiar los puertos para la implementacion correcta del grapql) 
 
 ## Características
 
@@ -25,4 +26,3 @@ Para configurar y ejecutar el proyecto, sigue estos pasos:
    ```bash
    npm run dev
 
-4.nota adicional (recuerda cambiar los puertos para la implementacion correcta del grapql) 
