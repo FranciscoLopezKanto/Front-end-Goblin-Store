@@ -20,11 +20,12 @@ const ConfirmPage: React.FC = () => {
   const router = useRouter();
   const [transactionStatus, setTransactionStatus] = useState<string | null>(null);
   const { items, emptyCart } = useCart();
+  const [carritoAux, setCarritoAux] = useState<typeof items | null>(null); // Nuevo estado para almacenar el carrito auxiliar
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const carritoAux = [...items]; // Crear una copia del carrito antes de limpiarlo
+        const carritoAuxCopy = [...items];
 
         const { data } = await client.query({
           query: COMMIT_PAYMENT_QUERY,
@@ -32,10 +33,12 @@ const ConfirmPage: React.FC = () => {
         });
 
         setTransactionStatus(data.commitPayment.status);
-        emptyCart(); // Limpia el carrito después de obtener la información
 
-        // Acciones adicionales con la variable auxiliar (carritoAux) si es necesario
-        console.log("Items antes de limpiar el carrito:", carritoAux);
+        console.log("Items antes de limpiar el carrito:", carritoAuxCopy);
+
+        emptyCart();
+        
+        setCarritoAux(carritoAuxCopy);
       } catch (error) {
         console.error("Error en la consulta:", error);
       }
@@ -49,21 +52,20 @@ const ConfirmPage: React.FC = () => {
   return (
     <div>
       <h1>Confirmación de Pago</h1>
-      <p>Token_ws: {router.query.token_ws}</p>
       {transactionStatus === "AUTHORIZED" ? (
         <div>
           <p>Compra pagada y confirmada</p>
           <h2>Items comprados:</h2>
           <ul>
-            {items.map((carritoAux) => (
-              <li key={carritoAux.id}>
-                {carritoAux.name} - Cantidad: {carritoAux.quantity}
+            {carritoAux && carritoAux.map((item) => (
+              <li key={item.id}>
+                {item.name} - Cantidad: {item.quantity}
               </li>
             ))}
           </ul>
         </div>
       ) : (
-        <p>Pago no efectuado</p>
+        <p>Pago no efectuado por tarjeta expirada o sin cupo</p>
       )}
     </div>
   );
