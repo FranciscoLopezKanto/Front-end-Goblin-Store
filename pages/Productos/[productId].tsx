@@ -151,7 +151,8 @@ function Product({ product }: ProductProps) {
 
         <div className={styles.Infos}>
           <h2>{product.name}</h2>
-          <h2 className={styles.value}>CLP${parseFloat(product.price).toLocaleString("es-CL")}</h2>
+          <h2 className={styles.value}>CLP${product.price.toLocaleString("es-CL")}</h2>
+
 
           <p>{product.description}</p>
           <p>{product.description_large}</p>
