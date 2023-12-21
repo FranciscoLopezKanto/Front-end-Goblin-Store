@@ -1,0 +1,25 @@
+.confirmPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .successMessage {
+    background-color: #dff0d8;
+    border: 1px solid #3c763d;
+    color: #3c763d;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 4px;
+  }
+  
+  .errorMessage {
+    background-color: #f2dede;
+    border: 1px solid #a94442;
+    color: #a94442;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 4px;
+  }

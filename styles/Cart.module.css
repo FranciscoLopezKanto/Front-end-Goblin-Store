@@ -7,7 +7,20 @@
   padding: 2em;
   margin: 0;
 }
+.centeredContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 800px;
+  height: 10vh;
+  padding: 2em;
+  font-size: 24px
+}
 
+.emptyCartText {
+  text-align: center;
+  margin-bottom: 16px;
+}
 .checkoutBox {
   padding: 2em;
   margin: auto;
@@ -19,9 +32,53 @@
   border-radius: 5px;
   width: 30%;
 }
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
 
+.fieldGroup label {
+  margin-bottom: 0.5em;
+  font-weight: bold;
+}
+
+.fieldGroup input {
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.fieldGroup input:focus {
+  outline: none;
+  border-color: #2f5cff; /* Cambia el color del borde al enfocar el input */
+}
 /* Estilos para la vista móvil (max-width: 768px) */
 @media (max-width: 768px) {
+  .centeredContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    
+  }
+  
+  .emptyCartText {
+    text-align: center;
+    margin-bottom: 16px;
+    margin-left: -820px;
+  }
+  
+  .btnFinalizar {
+    /* Ajusta el espacio horizontal según sea necesario */
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-left: -800px;
+  }
   .wrapper {
     display: none;
   }

@@ -5,6 +5,8 @@ import { useCart } from "react-use-cart";
 import { useQuery, gql } from "@apollo/client";
 import client from "../../apollo/apolloClient";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface CartItem {
   id: string;
@@ -37,15 +39,52 @@ function CartContent() {
 
   const [paymentError, setPaymentError] = useState<null | string>(null);
   const [paymentToken, setPaymentToken] = useState<null | string>(null);
+  const [userInfo, setUserInfo] = useState<{
+    firstName: string;
+    lastName: string;
+  } | null>(null);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+  const [showError, setShowError] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
-    
-  }, [paymentToken]);
-  console.log(paymentToken);
+    const userInfoString = localStorage.getItem("user_info");
+    if (userInfoString) {
+      const user = JSON.parse(userInfoString);
+      setUserInfo(user);
+    }
+  }, []);
+
+  const notifyError = (message: string) => {
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
 
   const handleCheckout = async () => {
     try {
+      if (!userInfo && (!name || !isValidEmail(email) || !address)) {
+        notifyError("Rellena todos los campos correctamente antes de continuar con el pago");
+        // Si el usuario no está autenticado y falta información o el correo no es válido, muestra el error
+        setShowError(true);
+        return;
+      }
+
+      setShowError(false);
+
       const { data: paymentData } = await client.query<CreatePaymentData>({
         query: CREATE_PAYMENT_QUERY,
         variables: { monto: cartTotal.toString(), description: "Compra en línea" },
@@ -53,14 +92,12 @@ function CartContent() {
 
       const token = paymentData?.createPayment?.token;
       setPaymentToken(token);
-      console.log('Token de pago:', token);
 
-      
       const form = document.getElementById("webpayForm") as HTMLFormElement;
       const tokenInput = document.createElement("input");
       tokenInput.type = "hidden";
       tokenInput.name = "token_ws";
-      tokenInput.value = token || ""; 
+      tokenInput.value = token || "";
       form.appendChild(tokenInput);
 
       // Ahora puedes enviar el formulario al servidor de Webpay
@@ -74,22 +111,24 @@ function CartContent() {
   };
 
   const handleFinalizarCompra = () => {
-    
     handleCheckout();
+  };
+
+  const isValidEmail = (value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
   };
 
   return (
     <div className={styles.wrapper}>
-      {totalUniqueItems === 0 ? (
-        // Si el carrito está vacío, mostrar solo el mensaje y el botón
-        <div className={styles.emptyCartContainer}>
-          <p className={styles.emptyCartText}>¡Tu carrito está vacío!</p>
-          <button className={styles.btnFinalizar} onClick={() => router.push("/")}>
-            Volver al inicio
-          </button>
-        </div>
-      ) : (
-        // Si el carrito no está vacío, renderizar el contenido normal
+    {totalUniqueItems === 0 ? (
+      <div className={`${styles.emptyCartContainer} ${styles.centeredContent}`}>
+        <p className={styles.emptyCartText}>¡Tu carrito está vacío!</p>
+        <button className={styles.btnFinalizar} onClick={() => router.push("/")}>
+          Volver al inicio
+        </button>
+      </div>
+    ) : (
         <>
           <table className={styles.table}>
             <thead>
@@ -138,6 +177,37 @@ function CartContent() {
             </tbody>
           </table>
           <div className={styles.checkoutBox}>
+            {!userInfo && (
+              <div className={styles.additionalFields}>
+                <div className={styles.fieldGroup}>
+                  <label>Nombre:</label>
+                  <input
+                    type="text"
+                    placeholder="Nombre"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className={styles.fieldGroup}>
+                  <label>Correo electrónico:</label>
+                  <input
+                    type="email"
+                    placeholder="Correo electrónico"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className={styles.fieldGroup}>
+                  <label>Dirección:</label>
+                  <input
+                    type="text"
+                    placeholder="Dirección"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
             <div>
               <h3>Items en el carrito: {totalUniqueItems}</h3>
             </div>
@@ -157,7 +227,6 @@ function CartContent() {
           </div>
         </>
       )}
-
       {/* Formulario */}
       <form
         id="webpayForm"
@@ -170,6 +239,29 @@ function CartContent() {
           value={paymentToken || "01ab22eb31c0e1668084ac4ff45c4ceeffb4d20e73d19434fe9173ddbd8d78d8"}
         />
       </form>
+      {/* Toast Container */}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      {/* Modal de error */}
+      {showError && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <span className={styles.close} onClick={() => setShowError(false)}>
+              &times;
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
