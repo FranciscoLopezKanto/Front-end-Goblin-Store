@@ -35,8 +35,9 @@ function CartContent() {
     cartTotal,
     items,
     updateItemQuantity,
+    removeItem,
   } = useCart();
-
+  console.log(items);
   const [paymentError, setPaymentError] = useState<null | string>(null);
   const [paymentToken, setPaymentToken] = useState<null | string>(null);
   const [userInfo, setUserInfo] = useState<{
@@ -74,11 +75,45 @@ function CartContent() {
     });
   };
 
+  const notifyWarning = (message: string) => {
+    toast.warn(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+  const stock = async () => {
+    try {
+      // Verificar si hay productos fuera de stock en el carrito
+      const outOfStockItem = items.find((item) => item.name === "Nooo Pablo Nooo" && item.quantity !== undefined && item.quantity >= 1);
+      console.log(outOfStockItem);
+      if (outOfStockItem) {
+        notifyWarning("¡No hay stock para 'Nooo Pablo Nooo'! Se eliminará del carrito.");
+        removeItem(outOfStockItem.id);
+        return true ;
+      }
+    } catch (error) {
+      console.error('Error al realizar la consulta de stock:', error);
+    }
+  };
+
   const handleCheckout = async () => {
     try {
+      
+      const itemRemoved = await stock();
+
+      if (itemRemoved) {
+      // Si se eliminó un elemento, puedes decidir cómo manejar el flujo
+      // Puedes detener aquí o continuar con el proceso de pago
+        return;
+     }
       if (!userInfo && (!name || !isValidEmail(email) || !address)) {
         notifyError("Rellena todos los campos correctamente antes de continuar con el pago");
-        // Si el usuario no está autenticado y falta información o el correo no es válido, muestra el error
         setShowError(true);
         return;
       }
@@ -100,7 +135,6 @@ function CartContent() {
       tokenInput.value = token || "";
       form.appendChild(tokenInput);
 
-      // Ahora puedes enviar el formulario al servidor de Webpay
       setTimeout(() => {
         form.submit();
       }, 500);
@@ -118,7 +152,6 @@ function CartContent() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value);
   };
-
   return (
     <div className={styles.wrapper}>
     {totalUniqueItems === 0 ? (
