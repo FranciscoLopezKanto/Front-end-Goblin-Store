@@ -5,7 +5,7 @@ import eraibassano from '../public/Poleras/4.png'
 import nopablono from '../public/Poleras/5.png'
 import erailuisa from '../public/Poleras/6.png'
 import eraipipe from '../public/Poleras/7.png'
-import eraipablo from '../public/Poleras//8.png'
+
 const database = [
   {
     "image": duendelab,
@@ -81,7 +81,7 @@ const database = [
     "description_large": `¿Te ha traicionado tu amigo Pipeño por amor? Con esta polera, puedes mostrar tu descontento de una manera humorística. Inspirada en situaciones en las que Pipeño prefiere pasear con su enamorada en lugar de pasar tiempo contigo, esta camiseta es una declaración de amistad y sarcasmo. Hecha de algodón 100%, es cómoda y fresca, perfecta para expresar tus sentimientos mientras mantienes un estilo fresco. ¡Lleva la camiseta y haz que Pipeño sepa lo que piensas!`
   },
   {
-    "image": eraipablo,
+    "image": eraipipe,
     "name": 'Polera "Erai Pablo"',
     "price": '9990',
     "id": 8,
