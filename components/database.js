@@ -5,8 +5,7 @@ import eraibassano from '../public/Poleras/4.png'
 import nopablono from '../public/Poleras/5.png'
 import erailuisa from '../public/Poleras/6.png'
 import eraipipe from '../public/Poleras/7.png'
-import eraipablo from '../public/Poleras/8.png'
-
+import eraipablo from '../public/Poleras//8.png'
 const database = [
   {
     "image": duendelab,
