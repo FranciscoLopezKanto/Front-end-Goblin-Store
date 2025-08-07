@@ -11,6 +11,7 @@ const COMMIT_PAYMENT_QUERY = gql`
     }
   }
 `;
+ 
 
 const useCommitPaymentQuery = (token_ws: string | null) => {
   return useQuery(COMMIT_PAYMENT_QUERY, {
